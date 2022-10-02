@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import { type FC, useState, useCallback } from "react";
+import { type FC, useState, useCallback, ChangeEvent } from "react";
 import styles from "../styles/Home.module.css";
 
 const RustComponent = dynamic({
@@ -24,12 +24,18 @@ const Main: FC = () => {
 
   const increment = useCallback(() => setNumber((prev) => prev + 1), []);
   const decrement = useCallback(() => setNumber((prev) => prev - 1), []);
+  const reset = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const num = Number(e.target.value);
+    if (isNaN(num)) return;
+    setNumber(num);
+  }, []);
 
   return (
     <div>
       <RustComponent number={number} />
       <button onClick={increment}>Increment</button>
       <button onClick={decrement}>Decrement</button>
+      <input type="number" value={number} onChange={reset} />
     </div>
   );
 };
