@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "build-rust": "rustc --target wasm32-unknown-unknown -O --crate-type=cdylib src/prime_number.rs -o prime_number.wasm",
+    "build-rust": "zsh scripts/build.sh",
     "lint": "next lint"
   },
   "dependencies": {

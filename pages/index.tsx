@@ -7,7 +7,7 @@ import styles from "../styles/Home.module.css";
 const RustComponent = dynamic({
   loader: async () => {
     // Import the wasm module
-    const rustModule = await import("../prime_number.wasm");
+    const rustModule = await import("../src/build/prime_number.wasm");
     return (props: { number: number }) => {
       const isPrimeNumber = rustModule.is_prime_number(props.number);
       if (isPrimeNumber) {
