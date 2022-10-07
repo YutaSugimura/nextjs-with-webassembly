@@ -4,7 +4,7 @@ import Head from "next/head";
 import { type FC, useState, useCallback, ChangeEvent } from "react";
 import styles from "../styles/Home.module.css";
 
-const RustComponent = dynamic({
+const PrimeNumberWasmComponent = dynamic({
   loader: async () => {
     // Import the wasm module
     const rustModule = await import("../src/build/prime_number.wasm");
@@ -19,7 +19,26 @@ const RustComponent = dynamic({
   },
 });
 
-const Main: FC = () => {
+const MultipleEnumerationWasmComponent = dynamic({
+  loader: async () => {
+    const rustModule = await import("../src/build/multiple_enumeration.wasm");
+    return (props: { number: number }) => {
+      const multiple_enumeration = rustModule.multiple_enumeration(
+        props.number
+      );
+
+      return (
+        <div>
+          <p>multiple enumeration</p>
+          <p>input number: {props.number}</p>
+          <p>count: {multiple_enumeration}</p>
+        </div>
+      );
+    };
+  },
+});
+
+const PrimeNumberComponent: FC = () => {
   const [number, setNumber] = useState<number>(1);
 
   const increment = useCallback(() => setNumber((prev) => prev + 1), []);
@@ -32,7 +51,7 @@ const Main: FC = () => {
 
   return (
     <div>
-      <RustComponent number={number} />
+      <PrimeNumberWasmComponent number={number} />
       <button onClick={increment}>Increment</button>
       <button onClick={decrement}>Decrement</button>
       <input type="number" value={number} onChange={reset} />
@@ -50,7 +69,8 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <Main />
+        <PrimeNumberComponent />
+        <MultipleEnumerationWasmComponent number={120} />
       </main>
     </div>
   );
