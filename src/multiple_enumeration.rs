@@ -1,7 +1,8 @@
-use std::convert::TryInto;
+use std::ffi::CString;
+use std::os::raw::c_char;
 
 #[no_mangle]
-pub extern "C" fn multiple_enumeration(n: i32) -> i32 {
+pub fn multiple_enumeration(n: i32) -> *mut c_char {
     let mut result = Vec::<i32>::new();
 
     let num: f64 = From::from(n);
@@ -25,5 +26,10 @@ pub extern "C" fn multiple_enumeration(n: i32) -> i32 {
     }
 
     result.sort();
-    return result.len().try_into().unwrap();
+    let result_str = result
+        .iter()
+        .map(|i| i.to_string())
+        .collect::<Vec<String>>()
+        .join(",");
+    return CString::new(result_str).unwrap().into_raw();
 }

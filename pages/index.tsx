@@ -23,15 +23,26 @@ const MultipleEnumerationWasmComponent = dynamic({
   loader: async () => {
     const rustModule = await import("../src/build/multiple_enumeration.wasm");
     return (props: { number: number }) => {
-      const multiple_enumeration = rustModule.multiple_enumeration(
-        props.number
+      const decodeCstr = (ptr: number) => {
+        let m = new Uint8Array(rustModule.memory.buffer);
+        let s = "";
+        while (m[ptr] != 0) {
+          s += String.fromCharCode(m[ptr]);
+          ptr++;
+        }
+
+        return s;
+      };
+
+      const multiple_enumeration = decodeCstr(
+        rustModule.multiple_enumeration(props.number)
       );
 
       return (
         <div>
           <p>multiple enumeration</p>
           <p>input number: {props.number}</p>
-          <p>count: {multiple_enumeration}</p>
+          <p>result: {multiple_enumeration}</p>
         </div>
       );
     };
@@ -70,7 +81,7 @@ const Home: NextPage = () => {
 
       <main>
         <PrimeNumberComponent />
-        <MultipleEnumerationWasmComponent number={120} />
+        <MultipleEnumerationWasmComponent number={2050} />
       </main>
     </div>
   );
