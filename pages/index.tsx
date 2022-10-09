@@ -40,8 +40,6 @@ const MultipleEnumerationWasmComponent = dynamic({
 
       return (
         <div>
-          <p>multiple enumeration</p>
-          <p>input number: {props.number}</p>
           <p>result: {multiple_enumeration}</p>
         </div>
       );
@@ -70,6 +68,24 @@ const PrimeNumberComponent: FC = () => {
   );
 };
 
+const MultipleEnumerationComponent: FC = () => {
+  const [number, setNumber] = useState<number>(20);
+
+  const reset = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const num = Number(e.target.value);
+    if (isNaN(num)) return;
+    setNumber(num);
+  }, []);
+
+  return (
+    <div>
+      <p>multiple enumeration</p>
+      <input type="number" value={number} onChange={reset} />
+      <MultipleEnumerationWasmComponent number={number} />
+    </div>
+  );
+};
+
 const Home: NextPage = () => {
   return (
     <div className={styles.container}>
@@ -81,7 +97,7 @@ const Home: NextPage = () => {
 
       <main>
         <PrimeNumberComponent />
-        <MultipleEnumerationWasmComponent number={2050} />
+        <MultipleEnumerationComponent />
       </main>
     </div>
   );
