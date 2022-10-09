@@ -60,10 +60,11 @@ const PrimeNumberComponent: FC = () => {
 
   return (
     <div>
+      <h2>is prime number</h2>
       <PrimeNumberWasmComponent number={number} />
+      <input type="number" value={number} onChange={reset} />
       <button onClick={increment}>Increment</button>
       <button onClick={decrement}>Decrement</button>
-      <input type="number" value={number} onChange={reset} />
     </div>
   );
 };
@@ -79,7 +80,7 @@ const MultipleEnumerationComponent: FC = () => {
 
   return (
     <div>
-      <p>multiple enumeration</p>
+      <h2>multiple enumeration</h2>
       <input type="number" value={number} onChange={reset} />
       <MultipleEnumerationWasmComponent number={number} />
     </div>
