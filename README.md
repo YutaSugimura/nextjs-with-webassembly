@@ -11,6 +11,12 @@ yarn install # or npm install
 rustup target add wasm32-unknown-unknown
 ```
 
+### build
+
+```bash
+yarn build-rust # or npm run build-rust
+```
+
 ### start
 
 ```bash
