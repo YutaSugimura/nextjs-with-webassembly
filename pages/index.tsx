@@ -35,7 +35,7 @@ const MultipleEnumerationWasmComponent = dynamic({
       };
 
       const multiple_enumeration = decodeCstr(
-        rustModule.multiple_enumeration(props.number)
+        rustModule.multiple_enumeration_str(props.number)
       );
 
       return (

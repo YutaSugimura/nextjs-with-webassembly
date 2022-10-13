@@ -1,8 +1,8 @@
-use std::ffi::CString;
-use std::os::raw::c_char;
+use std::ffi::{CString};
+use std::os::raw::{c_char};
 
 #[no_mangle]
-pub fn multiple_enumeration(n: i32) -> *mut c_char {
+pub fn multiple_enumeration(n: i32) -> Vec<i32> {
     let mut result = Vec::<i32>::new();
 
     let num: f64 = From::from(n);
@@ -26,6 +26,13 @@ pub fn multiple_enumeration(n: i32) -> *mut c_char {
     }
 
     result.sort();
+    result
+}
+
+#[no_mangle]
+pub fn multiple_enumeration_str(n: i32) -> *mut c_char {
+    let result = multiple_enumeration(n);
+
     let result_str = result
         .iter()
         .map(|i| i.to_string())
