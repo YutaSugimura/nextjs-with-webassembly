@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
-import dynamic from "next/dynamic";
 import Head from "next/head";
+import { BitAllExplorationComponent } from "../src/components/bitAllExploration";
 import { MultipleEnumerationComponent } from "../src/components/multipleEnumeration";
 import { PrimeNumberComponent } from "../src/components/primeNumber";
 import styles from "../styles/Home.module.css";
@@ -17,6 +17,7 @@ const Home: NextPage = () => {
       <main>
         <PrimeNumberComponent />
         <MultipleEnumerationComponent />
+        <BitAllExplorationComponent />
       </main>
     </div>
   );
