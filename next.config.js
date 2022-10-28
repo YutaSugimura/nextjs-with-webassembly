@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
-  reactStrictMode: true,
-  swcMinify: true,
+const nextConfig = {
+  experimental: {
+    appDir: true,
+  },
   webpack(config) {
     config.output.webassemblyModuleFilename = "static/wasm/[modulehash].wasm";
 
@@ -11,3 +12,5 @@ module.exports = {
     return config;
   },
 };
+
+module.exports = nextConfig;

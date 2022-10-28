@@ -3,7 +3,7 @@ import { type ChangeEvent, type FC, useCallback, useState } from "react";
 
 const BitAllExplorationWasmComponent = dynamic({
   loader: async () => {
-    const rustModule = await import("../build/bit_all_exploration.wasm");
+    const rustModule = await import("../src/build/bit_all_exploration.wasm");
     return (props: { str: string }) => {
       const decodeCstr = (ptr: number) => {
         let m = new Uint8Array(rustModule.memory.buffer);
@@ -62,7 +62,6 @@ export const BitAllExplorationComponent: FC = () => {
 
   return (
     <div>
-      <h2>Bit All Exploration</h2>
       <input type="text" value={text} onChange={onChangeValue} />
       <BitAllExplorationWasmComponent str={text} />
     </div>

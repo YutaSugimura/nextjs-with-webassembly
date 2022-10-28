@@ -4,7 +4,8 @@ import { type ChangeEvent, type FC, useCallback, useState } from "react";
 const PrimeNumberWasmComponent = dynamic({
   loader: async () => {
     // Import the wasm module
-    const rustModule = await import("../build/prime_number.wasm");
+    const rustModule = await import("../src/build/prime_number.wasm");
+
     return (props: { number: number }) => {
       const isPrimeNumber = rustModule.is_prime_number(props.number);
       if (isPrimeNumber) {
@@ -29,7 +30,6 @@ export const PrimeNumberComponent: FC = () => {
 
   return (
     <div>
-      <h2>is prime number</h2>
       <PrimeNumberWasmComponent number={number} />
       <input type="number" value={number} onChange={reset} />
       <button onClick={increment}>Increment</button>
