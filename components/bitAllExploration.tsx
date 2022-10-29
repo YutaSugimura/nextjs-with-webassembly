@@ -1,10 +1,24 @@
-import dynamic from "next/dynamic";
-import { type ChangeEvent, type FC, useCallback, useState } from "react";
+import {
+  type ChangeEvent,
+  type FC,
+  useCallback,
+  useState,
+  useEffect,
+} from "react";
 
-const BitAllExplorationWasmComponent = dynamic({
-  loader: async () => {
-    const rustModule = await import("../src/build/bit_all_exploration.wasm");
-    return (props: { str: string }) => {
+const BitAllExplorationWasmComponent: FC = () => {
+  const [text, setText] = useState<string>("A,B,C,D,E,F");
+  const [output, setOutput] = useState<string>("");
+
+  const onChangeValue = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setText(e.target.value);
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      // Import the wasm module
+      const rustModule = await import("../src/build/bit_all_exploration.wasm");
+
       const decodeCstr = (ptr: number) => {
         let m = new Uint8Array(rustModule.memory.buffer);
         let s = "";
@@ -34,7 +48,7 @@ const BitAllExplorationWasmComponent = dynamic({
       };
 
       // main
-      let bytes = new TextEncoder().encode(props.str);
+      let bytes = new TextEncoder().encode(text);
       let ptr = copyMemory(bytes);
       let result_str = decodeCstr(
         rustModule.bit_all_exploration_str(ptr, bytes.length)
@@ -43,27 +57,18 @@ const BitAllExplorationWasmComponent = dynamic({
 
       let bitAllExploration = readString(result_ptr, len).replace(/,/g, "\n");
       deallocGuestMemory(result_ptr, len);
-
-      return (
-        <div>
-          <p>output: {bitAllExploration}</p>
-        </div>
-      );
-    };
-  },
-});
-
-export const BitAllExplorationComponent: FC = () => {
-  const [text, setText] = useState<string>("A,B,C,D,E,F");
-
-  const onChangeValue = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setText(e.target.value);
-  }, []);
+      setOutput(bitAllExploration);
+    })();
+  }, [text]);
 
   return (
     <div>
       <input type="text" value={text} onChange={onChangeValue} />
-      <BitAllExplorationWasmComponent str={text} />
+      <div>
+        <p>output: {output}</p>
+      </div>
     </div>
   );
 };
+
+export default BitAllExplorationWasmComponent;

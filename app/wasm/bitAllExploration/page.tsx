@@ -1,15 +1,20 @@
 "use client";
 
-import type { NextPage } from "next";
-import { BitAllExplorationComponent } from "../../../components/bitAllExploration";
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
 
-const Page: NextPage = () => {
+const BitAllExplorationComponent = dynamic(
+  () => import("../../../components/bitAllExploration"),
+  { suspense: true }
+);
+
+export default function BitAllExplorationPage() {
   return (
     <main>
       <h1>BitAll Exploration</h1>
-      <BitAllExplorationComponent />
+      <Suspense fallback={`Loading...`}>
+        <BitAllExplorationComponent />
+      </Suspense>
     </main>
   );
-};
-
-export default Page;
+}

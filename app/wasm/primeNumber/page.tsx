@@ -1,15 +1,20 @@
 "use client";
 
-import type { NextPage } from "next";
-import { PrimeNumberComponent } from "../../../components/primeNumber";
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
 
-const Page: NextPage = () => {
+const PrimeNumberComponent = dynamic(
+  () => import("../../../components/primeNumber"),
+  { suspense: true }
+);
+
+export default function PrimeNumberPage() {
   return (
     <main>
       <h1>Prime Number</h1>
-      <PrimeNumberComponent />
+      <Suspense fallback={`Loading...`}>
+        <PrimeNumberComponent />
+      </Suspense>
     </main>
   );
-};
-
-export default Page;
+}

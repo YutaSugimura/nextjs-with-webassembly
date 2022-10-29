@@ -1,10 +1,26 @@
-import dynamic from "next/dynamic";
-import { type ChangeEvent, type FC, useCallback, useState } from "react";
+import {
+  type ChangeEvent,
+  type FC,
+  useCallback,
+  useState,
+  useEffect,
+} from "react";
 
-const MultipleEnumerationWasmComponent = dynamic({
-  loader: async () => {
-    const rustModule = await import("../src/build/multiple_enumeration.wasm");
-    return (props: { number: number }) => {
+const MultipleEnumerationWasmComponent: FC = () => {
+  const [number, setNumber] = useState<number>(20);
+  const [output, setOutput] = useState<string>("");
+
+  const reset = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const num = Number(e.target.value);
+    if (isNaN(num)) return;
+    setNumber(num);
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      // Import the wasm module
+      const rustModule = await import("../src/build/multiple_enumeration.wasm");
+
       const decodeCstr = (ptr: number) => {
         let m = new Uint8Array(rustModule.memory.buffer);
         let s = "";
@@ -17,31 +33,20 @@ const MultipleEnumerationWasmComponent = dynamic({
       };
 
       const multiple_enumeration = decodeCstr(
-        rustModule.multiple_enumeration_str(props.number)
+        rustModule.multiple_enumeration_str(number)
       );
-
-      return (
-        <div>
-          <p>result: {multiple_enumeration}</p>
-        </div>
-      );
-    };
-  },
-});
-
-export const MultipleEnumerationComponent: FC = () => {
-  const [number, setNumber] = useState<number>(20);
-
-  const reset = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    const num = Number(e.target.value);
-    if (isNaN(num)) return;
-    setNumber(num);
-  }, []);
+      setOutput(multiple_enumeration);
+    })();
+  }, [number]);
 
   return (
     <div>
       <input type="number" value={number} onChange={reset} />
-      <MultipleEnumerationWasmComponent number={number} />
+      <div>
+        <p>result: {output}</p>
+      </div>
     </div>
   );
 };
+
+export default MultipleEnumerationWasmComponent;
