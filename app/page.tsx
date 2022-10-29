@@ -1,4 +1,5 @@
-import type { NextPage } from "next";
+"use client";
+
 import Link from "next/link";
 
 const paths = [
@@ -16,7 +17,7 @@ const paths = [
   },
 ];
 
-const Page: NextPage = () => {
+export default function RootPage() {
   return (
     <main>
       <ul>
@@ -28,6 +29,4 @@ const Page: NextPage = () => {
       </ul>
     </main>
   );
-};
-
-export default Page;
+}
