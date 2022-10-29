@@ -3,7 +3,7 @@ import { type ChangeEvent, type FC, useCallback, useState } from "react";
 
 const MultipleEnumerationWasmComponent = dynamic({
   loader: async () => {
-    const rustModule = await import("../build/multiple_enumeration.wasm");
+    const rustModule = await import("../src/build/multiple_enumeration.wasm");
     return (props: { number: number }) => {
       const decodeCstr = (ptr: number) => {
         let m = new Uint8Array(rustModule.memory.buffer);
@@ -40,7 +40,6 @@ export const MultipleEnumerationComponent: FC = () => {
 
   return (
     <div>
-      <h2>multiple enumeration</h2>
       <input type="number" value={number} onChange={reset} />
       <MultipleEnumerationWasmComponent number={number} />
     </div>
