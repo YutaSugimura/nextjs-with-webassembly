@@ -36,9 +36,9 @@ const PrimeNumberWasmComponent: FC = () => {
 
       <div>
         {output ? (
-          <p>{`${number} is prime number`}</p>
+          <p style={{ color: "cyan" }}>{`${number} is prime number`}</p>
         ) : (
-          <p>{`${number} is not prime number`}</p>
+          <p style={{ color: "red" }}>{`${number} is not prime number`}</p>
         )}
       </div>
     </div>
